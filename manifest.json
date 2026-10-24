@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "洛谷深色模式 · DeepSeek 风",
+  "short_name": "洛谷深色",
+  "version": "2.1.0",
+  "description": "参考 DeepSeek 网页版的深灰低眩光主题，覆盖题面、题库、首页与旧版页面。仅在 luogu.com.cn 生效。",
+  "homepage_url": "https://github.com/Chu-913/luogu-deepseek-theme",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.luogu.com.cn/*"
+      ],
+      "css": [
+        "luogu-dark.css"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ]
+}

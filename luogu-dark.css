@@ -1,0 +1,1091 @@
+/* ==========================================================================
+   洛谷深色模式 · DeepSeek 深灰版
+   设计参考：DeepSeek 网页版深色模式（取色自官方深色页面）
+   - 页面 #151517，卡片 / 侧栏 #1b1b1c，浮层与输入框 #202022
+   - 品牌蓝 #4d6bfe，链接 #679efe，正文 #f2f3f5，1px 半透明描边
+   - 去掉纯黑与渐变，采用低对比的深灰分层，长时间刷题更柔和
+   - 覆盖新版（题面 / 题库）与旧版（首页 / 比赛等）两套前端
+   ========================================================================== */
+
+:root {
+  color-scheme: dark !important;
+
+  --lg-bg: #151517;
+  --lg-surface: #1b1b1c;
+  --lg-surface-2: #202022;
+  --lg-surface-3: #262628;
+  --lg-border: #303035;
+  --lg-border-strong: #414148;
+  --lg-text: #f2f3f5;
+  --lg-text-strong: #f9fafb;
+  --lg-text-dim: #a6a7ab;
+  --lg-text-faint: #77787d;
+  --lg-accent: #679efe;
+  --lg-accent-hover: #8ab8ff;
+  --lg-accent-soft: rgba(77, 107, 254, 0.16);
+  --lg-primary: #4d6bfe;
+  --lg-primary-hover: #5d78ff;
+  --lg-focus: #5686fe;
+
+  /* 洛谷主题变量（供未单独覆盖的组件兜底） */
+  --theme-navi-back: #1b1b1c !important;
+  --theme-navi-fore: #f2f3f5 !important;
+  --theme-navi-fore-rgb: 242, 243, 245 !important;
+  --theme-navi-logo: #f2f3f5 !important;
+  --theme-body-back: #151517 !important;
+  --theme-body-image: none !important;
+  --theme-body-color: none !important;
+  --theme-body-color-filter: none !important;
+  --theme-body-mid-mask: none !important;
+  --theme-card-background: #1b1b1c !important;
+  --theme-card-backdrop-filter: none !important;
+  --theme-dropdown: #202022 !important;
+  --theme-tooltip: #262628 !important;
+}
+
+/* --------------------------------------------------------------------------
+   1. 页面底色
+   -------------------------------------------------------------------------- */
+
+html,
+body,
+#app,
+.lfe-body {
+  background-color: var(--lg-bg) !important;
+  background-image: none !important;
+  color: var(--lg-text) !important;
+}
+
+body {
+  accent-color: var(--lg-accent);
+}
+
+.theme-page {
+  --theme-body-back: #151517 !important;
+  --theme-body-image: none !important;
+  --theme-body-color: none !important;
+  --theme-body-color-filter: none !important;
+  --theme-body-mid-mask: none !important;
+  --theme-card-background: #1b1b1c !important;
+  --theme-card-backdrop-filter: none !important;
+  background-color: var(--lg-bg) !important;
+  background-image: none !important;
+  color: var(--lg-text) !important;
+}
+
+/* 去掉题面背景的渐变光晕 / 插画 */
+.theme-page::before,
+.theme-page::after {
+  display: none !important;
+}
+
+.main-container,
+.main-container.lside-nav,
+.lside-nav,
+#app-old,
+.lg-index-content {
+  background-color: var(--lg-bg) !important;
+  background-image: none !important;
+}
+
+main {
+  background-color: var(--lg-bg) !important;
+  background-image: none !important;
+}
+
+/* 新版布局容器本身不应有底色，避免出现大块“灰板” */
+.columba-content-wrap,
+.main-content,
+.header-layout,
+.sidebar-container,
+.sidebar-container.layout,
+.sidebar-container .side,
+.sidebar-container .main,
+.theme-page > main {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.page-loading {
+  background-color: var(--lg-bg) !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. 顶栏与侧边导航
+   -------------------------------------------------------------------------- */
+
+.top-bar {
+  --theme-navi-back: #1b1b1c !important;
+  --theme-navi-fore: #f2f3f5 !important;
+  --theme-navi-fore-rgb: 242, 243, 245 !important;
+  --theme-navi-logo: #f2f3f5 !important;
+  background-color: var(--lg-surface) !important;
+  background-image: none !important;
+  color: var(--lg-text) !important;
+  box-shadow: inset 0 -1px 0 var(--lg-border) !important;
+}
+
+.top-bar a,
+.top-bar .logo-link {
+  color: var(--lg-text) !important;
+}
+
+.top-bar a:hover {
+  color: #ffffff !important;
+}
+
+.top-bar .side-toggle:hover,
+.top-bar .side-toggle.active {
+  background-color: var(--lg-surface-2) !important;
+}
+
+nav.sidebar,
+nav.user-nav,
+.user-nav {
+  background-color: var(--lg-surface) !important;
+  background-image: none !important;
+  color: var(--lg-text-dim) !important;
+}
+
+nav.sidebar {
+  box-shadow: inset -1px 0 0 var(--lg-border) !important;
+}
+
+nav.sidebar .nav-group::after {
+  border-bottom-color: var(--lg-border) !important;
+}
+
+nav.sidebar .group-title {
+  color: #8f9094 !important;
+}
+
+nav.sidebar li a {
+  color: #8f9094 !important;
+  border-radius: 6px;
+}
+
+nav.sidebar li a:hover {
+  color: #ffffff !important;
+  background-color: var(--lg-surface-2) !important;
+}
+
+nav.sidebar li a.router-link-active,
+nav.sidebar li a.active {
+  color: #ffffff !important;
+  background-color: var(--lg-surface-3) !important;
+}
+
+nav.sidebar li a.router-link-active .icon,
+nav.sidebar li a.active .icon {
+  color: var(--lg-accent) !important;
+}
+
+.user-nav a {
+  color: var(--lg-text-dim) !important;
+}
+
+.user-nav a:hover {
+  color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   3. 卡片（新版）
+   -------------------------------------------------------------------------- */
+
+.l-card,
+.header-card,
+.float-card,
+.problem-card,
+.l-card.container {
+  background-color: var(--lg-surface) !important;
+  background-image: none !important;
+  color: var(--lg-text) !important;
+  border: 1px solid var(--lg-border) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.l-card::before,
+.theme-page.theme-frosted .l-card::before {
+  background-color: var(--lg-surface) !important;
+  background-image: none !important;
+  border-radius: inherit !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+.l-card.burger .header {
+  border-bottom-color: var(--lg-border) !important;
+}
+
+.l-card.burger .footer {
+  border-top-color: var(--lg-border) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. 文字层级
+   -------------------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.lfe-h1,
+.lfe-h2,
+.lfe-h3,
+.lfe-h4,
+.lfe-h5,
+.lfe-h6,
+.am-panel-title {
+  color: var(--lg-text-strong) !important;
+}
+
+strong,
+b {
+  color: #f9fafb;
+}
+
+.lfe-caption,
+.field,
+.stat-text,
+.group-title,
+.total,
+.title.minor,
+.minor,
+.lfe-note {
+  color: var(--lg-text-dim) !important;
+}
+
+.lfe-caption b,
+.lfe-caption strong {
+  color: #c9cacd !important;
+}
+
+/* 题库筛选卡片里的旧版标签（原为 rgba(0,0,0,.85)，在深底上不可读） */
+span.title.no-wrap,
+.l-card .section > .title,
+.filter-label,
+label {
+  color: #c9cacd !important;
+}
+
+.result .count {
+  color: var(--lg-text-dim) !important;
+}
+
+.result .count .number {
+  color: #f9fafb !important;
+}
+
+.stat-text.value {
+  color: #f2f3f5 !important;
+}
+
+/* 个人主页头部 */
+.user-header-bottom {
+  background-color: #202022 !important;
+  color: var(--lg-text) !important;
+  border-top: 1px solid var(--lg-border) !important;
+  border-radius: 0 0 10px 10px;
+}
+
+.user-header-bottom .stat-text.name {
+  color: #8f9094 !important;
+}
+
+.user-header-bottom .stat-text.value {
+  color: #f9fafb !important;
+}
+
+/* 做题热力图：只替换 0 级的浅灰格子，保留有数据的颜色 */
+.heat-map-cell[style*="rgb(232, 232, 232)"] {
+  background-color: #262628 !important;
+}
+
+/* 旧版通用灰色标签（文章分类等）；带内联底色的难度/算法标签保持原色 */
+span[data-v-386007e1]:not([style*="background-color"]) {
+  background-color: var(--lg-surface-2) !important;
+  border-color: var(--lg-border-strong) !important;
+  color: #b8b9bd !important;
+}
+
+/* 文章列表摘要 */
+.row > span.content {
+  color: #a6a7ab !important;
+}
+
+/* 文章/内容侧栏分类 */
+.colored-link-selector .name {
+  color: #b8b9bd !important;
+}
+
+.colored-link-selector .wrap.active .name {
+  color: #ffffff !important;
+}
+
+.colored-link-selector .wrap:hover .name {
+  color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. 链接
+   -------------------------------------------------------------------------- */
+
+a {
+  color: var(--lg-accent) !important;
+}
+
+a:hover {
+  color: var(--lg-accent-hover) !important;
+}
+
+/* 标题类链接保持白色，避免整页蓝色链接过多 */
+.theme-page .title a,
+.list-wrap .row .title a,
+.am-panel-title a {
+  color: #f9fafb !important;
+}
+
+.theme-page .title a:hover,
+.list-wrap .row .title a:hover,
+.am-panel-title a:hover {
+  color: var(--lg-accent) !important;
+}
+
+.problem-block-actions a {
+  color: var(--lg-text-dim) !important;
+}
+
+.problem-block-actions a:hover {
+  color: #ffffff !important;
+}
+
+footer,
+footer p,
+footer a {
+  color: #85868a !important;
+}
+
+footer a:hover {
+  color: #c9cacd !important;
+}
+
+/* --------------------------------------------------------------------------
+   6. 表单
+   -------------------------------------------------------------------------- */
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select {
+  border-radius: 6px !important;
+  background-color: #202022 !important;
+  background-image: none !important;
+  color: #f2f3f5 !important;
+  border-color: var(--lg-border-strong) !important;
+  box-shadow: none !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"])::placeholder,
+textarea::placeholder {
+  color: var(--lg-text-faint) !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):focus,
+textarea:focus,
+select:focus {
+  border-color: var(--lg-focus) !important;
+  box-shadow: 0 0 0 3px rgba(86, 134, 254, 0.2) !important;
+  outline: none !important;
+}
+
+select option {
+  background-color: #202022;
+  color: #f2f3f5;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #202022 inset !important;
+  -webkit-text-fill-color: #f2f3f5 !important;
+  caret-color: #f2f3f5;
+}
+
+/* 洛谷自绘输入框 */
+.refined-input {
+  border-radius: 8px !important;
+  background-color: #202022 !important;
+  border-color: var(--lg-border-strong) !important;
+}
+
+.refined-input input {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.refined-input:focus-within {
+  border-color: var(--lg-focus) !important;
+  box-shadow: 0 0 0 3px rgba(86, 134, 254, 0.2) !important;
+}
+
+.refined-input .east,
+.refined-input .search-icon {
+  color: var(--lg-text-dim) !important;
+}
+
+.text.lform-size-middle,
+.block-item.tag-button {
+  border-radius: 8px !important;
+  background-color: #202022 !important;
+  border-color: var(--lg-border-strong) !important;
+  color: #e2e3e5 !important;
+}
+
+.text.lform-size-middle .placeholder {
+  color: #8f9094 !important;
+}
+
+button.lform-size-small {
+  background-color: var(--lg-surface-2) !important;
+  border-color: var(--lg-border-strong) !important;
+  color: #e2e3e5 !important;
+}
+
+button.lform-size-small:hover {
+  background-color: #262628 !important;
+  border-color: #4a4a50 !important;
+  color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   7. 标签页 / 筛选标签 / 进度条 / 分页
+   -------------------------------------------------------------------------- */
+
+ul.luogu {
+  background-color: #202022 !important;
+  border: 1px solid #34343a !important;
+  color: var(--lg-text-dim) !important;
+}
+
+ul.luogu li {
+  color: var(--lg-text-dim) !important;
+}
+
+ul.luogu li:hover {
+  color: #ffffff !important;
+}
+
+ul.luogu li.selected {
+  background-color: #4d6bfe !important;
+  color: #ffffff !important;
+}
+
+.toggle-tag {
+  border-radius: 6px !important;
+  background-color: var(--lg-surface-2) !important;
+  border: 1px solid var(--lg-border-strong) !important;
+  color: #b8b9bd !important;
+}
+
+.toggle-tag:hover {
+  background-color: #262628 !important;
+  border-color: #4a4a50 !important;
+  color: #ffffff !important;
+}
+
+.toggle-tag.selected {
+  background-color: var(--lg-accent-soft) !important;
+  border-color: #5686fe !important;
+  color: #9cbcff !important;
+}
+
+.progress-frame {
+  background-color: #2c2c30 !important;
+  border-color: #2c2c30 !important;
+  border-radius: 999px !important;
+}
+
+.progress-frame .square {
+  background-color: var(--lg-primary) !important;
+  border-radius: 999px !important;
+}
+
+.bottom-wrap.float {
+  background-color: var(--lg-surface) !important;
+  box-shadow: inset 0 1px 0 var(--lg-border) !important;
+}
+
+.page-bar.border {
+  border-top-color: #2a2a2e !important;
+}
+
+.page-bar .total {
+  color: #8f9094 !important;
+}
+
+.page-bar button {
+  background-color: #202022 !important;
+  border-color: var(--lg-border-strong) !important;
+  color: #b8b9bd !important;
+}
+
+.page-bar button:hover {
+  background-color: #262628 !important;
+  border-color: #4a4a50 !important;
+  color: #ffffff !important;
+}
+
+.page-bar button.selected {
+  background-color: #4d6bfe !important;
+  border-color: #4d6bfe !important;
+  color: #ffffff !important;
+}
+
+/* 比赛列表等页面使用的单选筛选按钮 */
+.l-options .option {
+  background-color: transparent !important;
+  color: #b8b9bd !important;
+}
+
+.l-options .option:hover {
+  background-color: var(--lg-surface-2) !important;
+  color: #ffffff !important;
+}
+
+.l-options .option.active {
+  background-color: #4d6bfe !important;
+  color: #ffffff !important;
+}
+
+.number {
+  color: #f9fafb !important;
+}
+
+.filter-result-count {
+  color: var(--lg-text-dim) !important;
+}
+
+.bottom-wrap .btn-checkbox {
+  color: var(--lg-text-dim) !important;
+}
+
+.bottom-wrap .btn-checkbox:hover {
+  color: #ffffff !important;
+}
+
+/* 题库表格 */
+.list-wrap.border .header-wrap {
+  border-bottom-color: #2a2a2e !important;
+}
+
+.list-wrap.border .row:not(:last-child) {
+  border-bottom-color: #2a2a2e !important;
+}
+
+.list-wrap .header-wrap,
+.list-wrap .header {
+  color: #8f9094 !important;
+}
+
+.list-wrap .row:hover {
+  background-color: #202022 !important;
+}
+
+/* 题目标题页签 */
+.menu {
+  --main-color: #679efe !important;
+}
+
+.menu .items .entry {
+  color: #c9cacd !important;
+}
+
+.expand-content {
+  background-color: #202022 !important;
+  border-color: #414148 !important;
+  color: #e2e3e5 !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65) !important;
+}
+
+.time,
+time {
+  color: #8f9094 !important;
+}
+
+/* 右侧广告图是白底图片，轻微压暗避免在深色页面上刺眼 */
+img[data-v-ce0b4304] {
+  filter: brightness(0.8);
+  border-radius: 8px;
+}
+
+/* 训练题单 */
+.training-card {
+  background-color: var(--lg-surface) !important;
+  border: 1px solid var(--lg-border) !important;
+  color: var(--lg-text) !important;
+}
+
+.training-card:hover {
+  background-color: var(--lg-surface-2) !important;
+  border-color: #414148 !important;
+}
+
+.training-title {
+  color: #f9fafb !important;
+}
+
+.training-title:hover {
+  color: var(--lg-accent) !important;
+}
+
+.training-id {
+  background-color: var(--lg-accent-soft) !important;
+  color: #8ab8ff !important;
+}
+
+.card-bottom,
+.card-bottom .bottom-item,
+.card-bottom .provider-display {
+  color: var(--lg-text-dim) !important;
+}
+
+.category-card {
+  background-color: var(--lg-surface) !important;
+  border-color: #2a2a2e !important;
+  color: var(--lg-text) !important;
+}
+
+.category-card .card-title {
+  color: #f2f3f5 !important;
+}
+
+.category-card .card-desc {
+  color: var(--lg-text-dim) !important;
+}
+
+.category-card.active {
+  background-color: #22252e !important;
+  border-color: #4d6bfe !important;
+}
+
+.category-card.active .card-title {
+  color: #8ab8ff !important;
+}
+
+/* 题单卡片右侧的“液体”进度圆：内圈原本写死为白色 */
+.liquid-chart circle[fill="#fff"] {
+  fill: var(--lg-surface) !important;
+}
+
+.liquid-chart .liquid-text {
+  color: #c9cacd !important;
+}
+
+.series-nav li {
+  color: var(--lg-text-dim) !important;
+}
+
+.series-nav li:hover {
+  color: #ffffff !important;
+}
+
+.series-nav li.selected {
+  color: var(--lg-accent) !important;
+  font-weight: 600;
+}
+
+.menu .items .entry:hover {
+  color: #ffffff !important;
+}
+
+.menu .items .entry.selected {
+  color: var(--lg-accent) !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. 题面 Markdown / 代码
+   -------------------------------------------------------------------------- */
+
+blockquote {
+  background-color: #202022 !important;
+  border-left: 3px solid #414148 !important;
+  color: #b8b9bd !important;
+}
+
+hr {
+  border-color: #2a2a2e !important;
+}
+
+table {
+  color: #e2e3e5 !important;
+  border-color: #2a2a2e !important;
+}
+
+th,
+thead {
+  background-color: #202022 !important;
+  color: #e6e7e9 !important;
+  border-color: #34343a !important;
+}
+
+td,
+tr {
+  border-color: #2a2a2e !important;
+}
+
+pre,
+.lfe-code,
+.code-container,
+.hljs {
+  background-color: #202022 !important;
+  background-image: none !important;
+  color: #e2e3e5 !important;
+  border-color: #34343a !important;
+  box-shadow: none !important;
+}
+
+pre {
+  border: 1px solid #34343a !important;
+  border-radius: 8px !important;
+}
+
+code {
+  background-color: #262628 !important;
+  border: 1px solid #414148 !important;
+  color: #f2f3f5 !important;
+  border-radius: 4px;
+}
+
+pre code,
+.hljs code {
+  background-color: transparent !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+kbd,
+samp {
+  background-color: #262628 !important;
+  border-color: #414148 !important;
+  color: #e6e7e9 !important;
+}
+
+/* 代码高亮配色（近似 GitHub Dark） */
+.hljs-comment,
+.hljs-quote {
+  color: #6e7781 !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-doctag,
+.hljs-name {
+  color: #ff7b72 !important;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta .hljs-string {
+  color: #a5d6ff !important;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-link {
+  color: #79c0ff !important;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-title.function_ {
+  color: #d2a8ff !important;
+}
+
+.hljs-built_in,
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #ffa657 !important;
+}
+
+.hljs-attr,
+.hljs-property,
+.hljs-params {
+  color: #79c0ff !important;
+}
+
+.hljs-meta,
+.hljs-deletion {
+  color: #ffa198 !important;
+}
+
+/* --------------------------------------------------------------------------
+   9. 弹窗 / 下拉框 / 提示
+   -------------------------------------------------------------------------- */
+
+.modal .l-card,
+.dialog .l-card,
+[role="dialog"] .l-card {
+  background-color: #202022 !important;
+  border-color: #414148 !important;
+}
+
+.modal .close,
+.modal .close svg {
+  color: var(--lg-text-dim) !important;
+}
+
+.modal .close:hover {
+  color: #ffffff !important;
+}
+
+.dropdown,
+.dropdown-operations {
+  background-color: #202022 !important;
+  color: #e2e3e5 !important;
+  border-color: #414148 !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65) !important;
+}
+
+.dropdown > ul > li:hover,
+.dropdown-operations > ul li:hover {
+  background-color: #262628 !important;
+}
+
+.v-popper__popper .v-popper__inner {
+  background-color: #262628 !important;
+  color: #f2f3f5 !important;
+  border: 1px solid #414148 !important;
+}
+
+.v-popper__popper .v-popper__arrow-outer {
+  border-color: #414148 !important;
+}
+
+.v-popper__popper .v-popper__arrow-inner {
+  border-color: #262628 !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. 按钮
+   -------------------------------------------------------------------------- */
+
+button.solid:not([style*="--l-button--real-color"]):not([style*="background-color"]),
+.l-button.solid:not([style*="--l-button--real-color"]):not([style*="background-color"]),
+.am-btn-primary {
+  background-color: var(--lg-primary) !important;
+  border-color: var(--lg-primary) !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+}
+
+button.solid:not([style*="--l-button--real-color"]):not([style*="background-color"]):hover,
+.l-button.solid:not([style*="--l-button--real-color"]):not([style*="background-color"]):hover,
+.am-btn-primary:hover {
+  background-color: var(--lg-primary-hover) !important;
+  border-color: var(--lg-primary-hover) !important;
+}
+
+.am-btn-default {
+  background-color: var(--lg-surface-2) !important;
+  border-color: var(--lg-border-strong) !important;
+  color: #e6e7e9 !important;
+}
+
+.am-btn-default:hover {
+  background-color: #262628 !important;
+  border-color: #4a4a50 !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. 旧版前端（首页 / 比赛等）
+   -------------------------------------------------------------------------- */
+
+#app-old,
+.lg-index-content {
+  color: var(--lg-text) !important;
+}
+
+.lg-article {
+  background-color: var(--lg-surface) !important;
+  background-image: none !important;
+  color: var(--lg-text) !important;
+  border: 1px solid var(--lg-border) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+.am-slider {
+  background-color: var(--lg-surface) !important;
+  border: 1px solid var(--lg-border) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.am-slider-default .am-control-nav li a {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: none !important;
+}
+
+.am-slider-default .am-control-nav li a:hover {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.am-slider-default .am-control-nav li a.am-active {
+  background-color: var(--lg-accent) !important;
+}
+
+.am-slider-default .am-direction-nav a:before {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+.am-panel {
+  background-color: var(--lg-surface) !important;
+  border-color: var(--lg-border) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.am-panel-hd {
+  background-color: #202022 !important;
+  color: #d6d7d9 !important;
+  border-bottom: 1px solid #2a2a2e !important;
+}
+
+.am-panel-primary .am-panel-hd {
+  background-color: #202022 !important;
+  color: #8ab8ff !important;
+  border-bottom-color: #303035 !important;
+}
+
+.am-panel-success .am-panel-hd {
+  background-color: #202022 !important;
+  color: #8fdfaa !important;
+  border-bottom-color: #303035 !important;
+}
+
+.am-panel-danger .am-panel-hd {
+  background-color: #202022 !important;
+  color: #ff9e9e !important;
+  border-bottom-color: #303035 !important;
+}
+
+.am-panel-warning .am-panel-hd {
+  background-color: #202022 !important;
+  color: #f0c977 !important;
+  border-bottom-color: #303035 !important;
+}
+
+.am-panel-title,
+.am-panel-title a {
+  color: inherit !important;
+}
+
+.am-panel-bd {
+  color: #d6d7d9 !important;
+}
+
+/* 旧版 AMUI 表格 */
+.am-table {
+  color: #e2e3e5 !important;
+  border-color: #2a2a2e !important;
+}
+
+.am-table > thead > tr > th {
+  background-color: #202022 !important;
+  color: #e6e7e9 !important;
+  border-color: #34343a !important;
+}
+
+.am-table > tbody > tr > td {
+  border-color: #2a2a2e !important;
+}
+
+.am-table-striped > tbody > tr:nth-child(odd) > td {
+  background-color: #202022 !important;
+}
+
+.am-table-striped > tbody > tr:nth-child(even) > td {
+  background-color: #202022 !important;
+}
+
+/* 旧版深色文字在深色底上不可读，换成亮色 */
+html body .lg-fg-greendark {
+  color: #5fd08a !important;
+}
+
+html body .lg-fg-bluedark {
+  color: #8ab8ff !important;
+}
+
+html body .lg-fg-bluelight {
+  color: #679efe !important;
+}
+
+html body .lg-fg-gray {
+  color: #9a9b9f !important;
+}
+
+html body .lg-fg-brown {
+  color: #d1a054 !important;
+}
+
+.lg-punch .lg-small {
+  color: #a6a7ab !important;
+}
+
+.lg-punch .lg-small strong {
+  color: #f2f3f5 !important;
+}
+
+/* 旧版提示框 / 面板内容 */
+.am-alert,
+.am-well,
+.am-comment,
+.am-comment-bd {
+  background-color: #202022 !important;
+  border-color: #34343a !important;
+  color: #e2e3e5 !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. 滚动条 / 选中文本
+   -------------------------------------------------------------------------- */
+
+::selection {
+  background-color: #4d6bfe !important;
+  color: #ffffff !important;
+}
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--lg-bg) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #414148 !important;
+  border: 2px solid var(--lg-bg) !important;
+  border-radius: 8px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4a4a50 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background-color: var(--lg-bg) !important;
+}
